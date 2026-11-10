@@ -82,6 +82,11 @@ git push -u origin main
 
 Replace `YOUR_GITHUB_USERNAME` with your GitHub username.
 
+Screenshot :-
+<img width="720" height="1457" alt="image" src="https://github.com/user-attachments/assets/124ee65b-578f-4d0a-af16-34d911e06b02" />
+
+<img width="720" height="1455" alt="image" src="https://github.com/user-attachments/assets/86356ad4-69f8-4e2d-a27d-f95441d7d813" />
+
 Before pushing, confirm that `.env` is not in the staged files:
 
 ```bash
