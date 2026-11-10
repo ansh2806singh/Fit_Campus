@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FitCampus — SIH 2026</title>
+<style>
+:root{--bg:#f6f6fb;--surface:#fff;--text:#17131f;--muted:#777;--border:#eee;--input-bg:#fff}
+.theme-dark{--bg:#121018;--surface:#1e1b29;--text:#f0edf7;--muted:#a89fc2;--border:#332e44;--input-bg:#262137}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
+button,input,select{font:inherit}button{cursor:pointer}
+.hidden{display:none!important}
+.auth{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#111529,#24124a 50%,#10101d)}
+.auth-card,.form-card{width:min(440px,100%);padding:32px 26px;border-radius:30px;box-shadow:0 25px 70px #0005}
+.auth-card{background:linear-gradient(180deg,#171b34,#0c1020);color:#fff;text-align:center}
+.form-card{background:#fff}.brand{font-size:46px;font-weight:800;letter-spacing:-2px;margin:10px 0}.brand span,.top-brand span{color:#a066ff}
+.tagline{color:#ccc;margin-bottom:38px}.feature{text-align:left;border-left:3px solid #8750ff;padding-left:15px;margin:20px 0}.feature small{display:block;color:#aaa;margin-top:5px}
+.primary{background:linear-gradient(90deg,#6733dc,#9057ff);color:#fff;border:0;border-radius:14px;font-weight:700}.ghost{background:transparent;color:#8750ef;border:1px solid #ddd;border-radius:14px}.big{width:100%;padding:15px;margin-top:12px}
+.form-card h1{margin:10px 0 5px}.muted{color:#777}.form-card input,.form-card select{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;margin-top:10px;background:white}
+.flabel{display:block;font-size:12px;color:#999;margin:14px 0 -4px}
+.hint{font-size:11px;color:#999;margin-top:5px}
+.legal{font-size:11px;margin-top:22px;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.back{background:none;border:0;font-size:25px}
+.app{min-height:100vh;padding-bottom:82px;background:var(--bg);color:var(--text)}.header{height:68px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--border)}.top-brand{font-size:24px;font-weight:800}
+main{width:min(900px,100%);margin:auto;padding:18px}.hello{font-size:26px;font-weight:800}.sub{color:var(--muted);margin-top:4px}
+.progress{margin-top:18px;border-radius:22px;padding:22px;background:linear-gradient(135deg,#5d2ad7,#8b50f7);color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:10px}.ring{width:145px;height:145px;border-radius:50%;border:13px solid #ffffff44;border-top-color:#fff;border-right-color:#fff;display:grid;place-items:center;margin:auto;transform:rotate(-25deg)}.ring b{font-size:23px;text-align:center;transform:rotate(25deg)}.ring small{display:block;font-size:10px;font-weight:400}.metrics{display:grid;align-content:center;gap:15px}.metric b{display:block;font-size:18px}.metric small{opacity:.8}
+.card{background:var(--surface);color:var(--text);border-radius:18px;padding:18px;margin-top:16px;box-shadow:0 4px 18px #17131f0c}.title{display:flex;justify-content:space-between;align-items:center;font-weight:700}.title small{color:var(--muted);font-weight:400}.streak{display:flex;justify-content:space-between;margin-top:17px}.day{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#eee;color:#777;font-size:12px}.day.done{background:#7040e7;color:#fff}
+.bars{height:105px;display:flex;align-items:end;gap:10px;margin-top:15px}.bar{flex:1;background:#8b57e8;border-radius:8px 8px 2px 2px}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}.quick button{border:0;background:#fafafa;border-radius:13px;padding:12px 3px;color:#17131f}.quick span{display:block;font-size:10px;margin-top:5px}
+.mini-tabs{display:flex;gap:8px}.mini-tabs button{border:0;background:#f1ebff;color:#6936dd;border-radius:20px;padding:5px 11px;font-size:11px}.mini-tabs button.active{background:#6936dd;color:#fff}
+.progress-bar-track{background:#eee;border-radius:20px;height:16px;margin-top:14px;overflow:hidden}.progress-bar-fill{background:linear-gradient(90deg,#6733dc,#9057ff);height:100%;border-radius:20px}
+.feel-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.feel-row button{border:1px solid var(--border);background:var(--input-bg);color:var(--text);border-radius:12px;padding:10px 2px;font-size:11px}
+.challenge{padding:0;overflow:hidden}.hero{padding:20px;color:#fff;background:linear-gradient(135deg,#14a9e8,#277fda)}.hero h2{margin:10px 0 4px}.hero p{margin:0;opacity:.9}.body{padding:15px}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.pill{display:inline-block;background:#eee5ff;color:#6939d8;padding:5px 9px;border-radius:20px;font-size:11px}.join{background:#713de0;color:white;border:0;border-radius:10px;padding:9px 14px;font-weight:700}.join.done{background:#2ea56d}
+.tabs{display:flex;gap:22px;border-bottom:1px solid var(--border);padding-bottom:11px}.tabs span,.tabs b{cursor:pointer;color:var(--muted)}.tabs b{color:#6b37df;border-bottom:2px solid #6b37df;padding-bottom:11px;font-weight:700}
+.profile-row{display:flex;align-items:center;gap:14px}.avatar-wrap{position:relative;width:64px;height:64px}.avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#e9dcff;color:#6b35dd;font-size:23px;font-weight:800;background-size:cover;background-position:center;cursor:pointer}.avatar-edit{position:absolute;bottom:-2px;right:-2px;width:22px;height:22px;border-radius:50%;background:#6936dd;color:#fff;display:grid;place-items:center;font-size:11px;border:2px solid var(--surface)}
+.level{background:#eee1ff;color:#6b35dd;border-radius:20px;padding:5px 8px;font-size:10px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}.stat{border:1px solid var(--border);border-radius:13px;padding:15px}.stat b{display:block;font-size:20px;margin-top:5px}.menu{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--border);cursor:pointer;gap:10px}
+.avatarpick-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.avatarpick-row button{background:#f1ebff;color:#6936dd;border:0;border-radius:20px;padding:8px 12px;font-size:12px}
+.workout{padding:20px;color:#fff;border-radius:20px;background:linear-gradient(135deg,#5d2bd2,#8c54f5)}.exercise{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--border);gap:10px}.exercise small{display:block;color:var(--muted);margin-top:4px}.check{width:25px;height:25px;background:#6c39df;color:#fff;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+.ex-img{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:#f1ebff;flex-shrink:0}
+.select-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.select-row select{padding:11px;border-radius:12px;border:1px solid var(--border);background:var(--input-bg);color:var(--text)}
+.goal-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}.goal-row button{padding:11px 4px;border:1px solid var(--border);background:var(--input-bg);color:var(--text);border-radius:12px;font-size:12px;font-weight:600}.goal-row button.active{background:#6936dd;color:#fff;border-color:#6936dd}
+.hcard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.hbox{background:var(--bg);border-radius:13px;padding:12px;text-align:center}.hbox b{display:block;font-size:16px;margin-top:3px}.hbox small{color:var(--muted);font-size:10.5px}
+.near-card{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}.near-card:last-child{border-bottom:0}.near-av{width:46px;height:46px;border-radius:50%;background:#e9dcff;color:#6b35dd;display:grid;place-items:center;font-weight:800;flex-shrink:0}.near-info{flex:1}.near-info b{display:block;font-size:14px}.near-dist{font-size:11px;color:var(--muted);white-space:nowrap}
+.nav{position:fixed;bottom:0;left:0;right:0;height:72px;background:var(--surface);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;z-index:5}.nav button{border:0;background:none;color:#777;min-width:44px}.nav button.active{color:#6939d8}.nav span{display:block;font-size:9.5px;margin-top:4px}
+#toast{position:fixed;top:18px;right:18px;z-index:60;background:#201631;color:#fff;padding:12px 16px;border-radius:12px;display:none;max-width:260px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.progress{grid-template-columns:1fr 1fr}main{padding:14px}.hcard{grid-template-columns:1fr 1fr}}
+
+.chat-panel{position:fixed;inset:0;width:100%;height:100%;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;z-index:50}
+.chat-panel.hidden{display:none!important}
+.chat-head{background:linear-gradient(90deg,#6733dc,#9057ff);color:#fff;padding:16px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.chat-head .ca{width:34px;height:34px;border-radius:50%;background:#ffffff33;display:grid;place-items:center;font-size:17px;flex-shrink:0}
+.chat-head .ct{flex:1;min-width:0}.chat-head .ct b{display:block;font-size:15px}.chat-head .ct small{opacity:.85;font-size:11px}
+.chat-head button{background:none;border:0;color:#fff;font-size:17px;padding:6px;flex-shrink:0}
+.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.chat-body-inner{width:min(700px,100%);margin:0 auto;display:flex;flex-direction:column;gap:10px;flex:1}
+.msg{max-width:80%;padding:10px 13px;border-radius:16px;font-size:13.5px;line-height:1.5;white-space:pre-wrap}
+.msg.bot{background:var(--surface);color:var(--text);box-shadow:0 2px 8px #17131f0f;border-bottom-left-radius:4px;align-self:flex-start}
+.msg.user{background:linear-gradient(90deg,#6733dc,#9057ff);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+.msg.typing{display:flex;gap:4px;align-items:center;padding:13px}
+.msg.typing span{width:6px;height:6px;border-radius:50%;background:#bbb;animation:blink 1.2s infinite ease-in-out}
+.msg.typing span:nth-child(2){animation-delay:.2s}.msg.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.tips-card{background:var(--surface);border-radius:16px;padding:14px;font-size:12.5px;align-self:stretch;box-shadow:0 2px 8px #17131f0f}
+.tips-card div{padding:4px 0}
+.chat-quick{display:flex;gap:6px;padding:10px 16px;flex-wrap:wrap;flex-shrink:0}
+.chat-quick button{background:#f1ebff;color:#6936dd;border:0;border-radius:20px;padding:7px 11px;font-size:11.5px}
+.chat-input{display:flex;gap:6px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
+.chat-input-inner{display:flex;gap:6px;width:min(700px,100%);margin:0 auto;flex:1}
+.chat-input input{flex:1;border:1px solid var(--border);border-radius:20px;padding:10px 15px;font-size:13.5px;background:var(--input-bg);color:var(--text);min-width:0}
+.chat-input button{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#6733dc,#9057ff);color:#fff;border:0;font-size:15px;flex-shrink:0}
+.chat-input button.listening{background:#ff4d4d;animation:blink 1s infinite}
+
+.sheet-overlay{position:fixed;inset:0;background:#00000066;z-index:30;display:flex;align-items:flex-end;justify-content:center}
+.sheet-overlay.hidden{display:none}
+.sheet{background:var(--surface);color:var(--text);width:100%;max-width:460px;border-radius:24px 24px 0 0;padding:22px;max-height:85vh;overflow-y:auto}
+.sheet h2{margin-top:0}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.sheet-head button{background:none;border:0;font-size:20px;color:var(--text)}
+.theme-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0 20px}
+.theme-row button{padding:12px 4px;border:1px solid var(--border);background:var(--input-bg);color:var(--text);border-radius:12px;font-size:12px;font-weight:600}
+.theme-row button.active{background:#6936dd;color:#fff;border-color:#6936dd}
+.sheet select,.sheet input{width:100%;padding:11px;border-radius:12px;border:1px solid var(--border);background:var(--input-bg);color:var(--text);margin-bottom:10px}
+.sheet .menu:last-child{border-bottom:0}
+.danger{color:#e0473d}
+.qr-box{text-align:center;margin-top:10px}
+.qr-box img{border-radius:14px;border:1px solid var(--border)}
+.switch{position:relative;width:42px;height:24px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:24px;transition:.2s}
+.slider:before{content:"";position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+input:checked + .slider{background:#6936dd}
+input:checked + .slider:before{transform:translateX(18px)}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<div id="infoSheet" class="sheet-overlay hidden" onclick="if(event.target===this)closeInfo()">
+ <div class="sheet">
+  <div class="sheet-head"><h2 id="infoTitle"></h2><button onclick="closeInfo()">✕</button></div>
+  <div id="infoBody"></div>
+ </div>
+</div>
+
+<section id="welcome" class="auth">
+ <div class="auth-card">
+  <div class="brand">Fit<span>Campus</span></div>
+  <p class="tagline">Get Fit. Stay Active. Win Together.</p>
+  <div class="feature"><b>✦ AI Personal Coach</b><small>Personalized workouts just for you</small></div>
+  <div class="feature"><b>♛ Campus Challenges</b><small>Compete and win exciting rewards</small></div>
+  <div class="feature"><b>⌁ Track & Earn</b><small>Track activities and earn points</small></div>
+  <button class="primary big" onclick="show('register')">Get Started</button>
+  <button class="ghost big" onclick="show('login')">Login</button>
+  <p class="legal muted">By continuing you agree to our <b style="color:#a066ff;cursor:pointer" onclick="openInfo('Privacy Policy',privacyHtml())">Privacy Policy</b></p>
+ </div>
+</section>
+
+<section id="login" class="auth hidden">
+ <div class="form-card">
+  <button class="back" onclick="show('welcome')">←</button>
+  <h1>Welcome back 👋</h1><p class="muted">Login to continue.</p>
+  <input id="lemail" placeholder="Email" type="email">
+  <input id="lpass" placeholder="Password" type="password">
+  <button class="primary big" onclick="login()">Login</button>
+  <p class="muted">New here? <b style="color:#703de0;cursor:pointer" onclick="show('register')">Create account</b></p>
+  <p class="legal muted">By continuing you agree to our <b style="color:#a066ff;cursor:pointer" onclick="openInfo('Privacy Policy',privacyHtml())">Privacy Policy</b></p>
+ </div>
+</section>
+
+<section id="register" class="auth hidden">
+ <div class="form-card">
+  <button class="back" onclick="show('welcome')">←</button>
+  <h1>Create your profile</h1><p class="muted">Enter your details to personalize FitCampus.</p>
+  <div class="grid">
+   <input id="name" placeholder="Full name">
+   <div>
+    <label class="flabel">Date of Birth</label>
+    <input id="dob" type="date">
+   </div>
+   <select id="gender"><option value="">Gender</option><option>Male</option><option>Female</option><option>Other</option></select>
+   <select id="activity"><option value="">Activity Level</option><option>Sedentary</option><option selected>Light</option><option>Moderate</option><option>Active</option><option>Very Active</option></select>
+   <input id="height" type="number" placeholder="Height (cm)">
+   <input id="weight" type="number" placeholder="Weight (kg)">
+  </div>
+  <input id="email" placeholder="Email" type="email">
+  <input id="pass" placeholder="Create password" type="password">
+  <div class="hint">Min 8 characters — letters, numbers & symbols only.</div>
+  <label class="flabel">Previous Health Report (optional)</label>
+  <input id="healthReport" type="file" accept=".pdf,.jpg,.jpeg,.png">
+  <button class="primary big" onclick="register()">Create Account</button>
+  <p class="legal muted">By creating an account you agree to our <b style="color:#a066ff;cursor:pointer" onclick="openInfo('Privacy Policy',privacyHtml())">Privacy Policy</b></p>
+ </div>
+</section>
+
+<section id="app" class="app hidden">
+ <header class="header"><div class="top-brand">Fit<span>Campus</span></div></header>
+ <main>
+  <div id="home" class="page"></div>
+  <div id="challenges" class="page hidden"></div>
+  <div id="tasks" class="page hidden"></div>
+  <div id="profile" class="page hidden"></div>
+  <div id="workout" class="page hidden"></div>
+ </main>
+ <nav class="nav">
+  <button id="n-home" onclick="nav('home')">⌂<span>Home</span></button>
+  <button id="n-challenges" onclick="nav('challenges')">♛<span>Challenges</span></button>
+  <button id="n-tasks" onclick="nav('tasks')">+<span>Tasks</span></button>
+  <button id="n-trainer" onclick="toggleChat()">✦<span>Trainer</span></button>
+  <button id="n-profile" onclick="nav('profile')">♙<span>Profile</span></button>
+ </nav>
+
+ <div id="chatPanel" class="chat-panel hidden">
+  <div class="chat-head">
+   <button onclick="toggleChat()" title="Back">←</button>
+   <div class="ca">✦</div>
+   <div class="ct"><b>Trainer</b><small>AI Personal Coach • Online</small></div>
+   <button id="voiceOutBtn" onclick="toggleVoiceOut()" title="Toggle voice replies">🔇</button>
+   <button onclick="clearChat()" title="Clear history">🗑</button>
+  </div>
+  <div id="chatBody" class="chat-body"><div class="chat-body-inner" id="chatBodyInner"></div></div>
+  <div id="chatQuick" class="chat-quick"></div>
+  <div class="chat-input"><div class="chat-input-inner">
+   <input id="chatInput" placeholder="Ask your trainer..." onkeydown="if(event.key==='Enter')sendChat()">
+   <button id="micBtn" onclick="toggleVoiceInput()" title="Voice input">🎤</button>
+   <button onclick="sendChat()" title="Send">➤</button>
+  </div></div>
+ </div>
+
+ <div id="settingsSheet" class="sheet-overlay hidden" onclick="if(event.target===this)closeSettings()">
+  <div class="sheet" id="settingsSheetInner"></div>
+ </div>
+
+ <div id="nearbySheet" class="sheet-overlay hidden" onclick="if(event.target===this)closeNearby()">
+  <div class="sheet">
+   <div class="sheet-head"><h2>Nearby Fitness Community</h2><button onclick="closeNearby()">✕</button></div>
+   <p class="muted" style="margin-top:0">People near you working towards their fitness goals.</p>
+   <div id="nearbyList"></div>
+  </div>
+ </div>
+
+ <div id="editHealthSheet" class="sheet-overlay hidden" onclick="if(event.target===this)closeEditHealth()">
+  <div class="sheet">
+   <div class="sheet-head"><h2>Edit Health Info</h2><button onclick="closeEditHealth()">✕</button></div>
+   <label class="flabel">Date of Birth</label>
+   <input id="editDob" type="date">
+   <select id="editGender"><option value="">Gender</option><option>Male</option><option>Female</option><option>Other</option></select>
+   <select id="editActivity"><option>Sedentary</option><option>Light</option><option>Moderate</option><option>Active</option><option>Very Active</option></select>
+   <input id="editHeight" type="number" placeholder="Height (cm)">
+   <input id="editWeight" type="number" placeholder="Weight (kg)">
+   <button class="primary big" onclick="saveHealthEdit()">Save Changes</button>
+  </div>
+ </div>
+
+ <input type="file" id="avatarFile" accept="image/*" class="hidden" onchange="onAvatarFile(event)">
+</section>
+
+<script>
+const KEY="fitcampus_user";
+const TKEY="fitcampus_theme";
+const TSKEY="fitcampus_textsize";
+const LKEY="fitcampus_lang";
+const NKEY="fitcampus_notif";
+let user=JSON.parse(localStorage.getItem(KEY)||"null");
+normalizeUser();
+
+let challenges=[
+ {title:"10K Steps Daily Challenge",desc:"Walk 10,000 steps daily for 7 days",cat:"Beginner",participants:2345,days:3,status:"available"},
+ {title:"30 Day Push-up Challenge",desc:"Build consistency with daily push-ups",cat:"Intermediate",participants:1234,days:10,status:"available"},
+ {title:"5 KM Run Challenge",desc:"Complete a 5 km run",cat:"Advanced",participants:987,days:4,status:"available"},
+ {title:"Yoga for Wellness",desc:"Daily yoga and mobility practice",cat:"Beginner",participants:654,days:6,status:"available"}
+];
+
+const nearbyPeople=[
+ {name:"Rahul Sharma",bio:"Training for College Marathon",dist:"0.4 km"},
+ {name:"Ananya Iyer",bio:"Weight Loss Journey",dist:"0.6 km"},
+ {name:"Vikram Singh",bio:"Strength & Bodybuilding",dist:"0.9 km"},
+ {name:"Priya Nair",bio:"Daily Yoga Practice",dist:"1.1 km"},
+ {name:"Karan Mehta",bio:"Cycling Club Rides",dist:"1.3 km"},
+ {name:"Sneha Reddy",bio:"Training for College Marathon",dist:"1.8 km"},
+ {name:"Aditya Kapoor",bio:"General Fitness & Gym",dist:"2.0 km"}
+];
+
+const exerciseBank={
+ "Home|None":[["Jumping Jacks","3 sets • 45 sec"],["Push Ups","3 sets • 12 reps"],["Bodyweight Squats","3 sets • 15 reps"],["Plank","3 sets • 45 sec"],["Mountain Climbers","3 sets • 30 sec"]],
+ "Home|Dumbbells":[["Dumbbell Squats","3 sets • 12 reps"],["Dumbbell Rows","3 sets • 12 reps"],["Shoulder Press","3 sets • 10 reps"],["Dumbbell Lunges","3 sets • 12 reps"],["Bicep Curls","3 sets • 15 reps"]],
+ "Home|Resistance Bands":[["Band Squats","3 sets • 15 reps"],["Band Rows","3 sets • 15 reps"],["Band Chest Press","3 sets • 12 reps"],["Band Deadlifts","3 sets • 12 reps"],["Band Lateral Walk","3 sets • 20 steps"]],
+ "Gym|Full Gym":[["Bench Press","4 sets • 10 reps"],["Lat Pulldown","4 sets • 10 reps"],["Leg Press","4 sets • 12 reps"],["Cable Rows","3 sets • 12 reps"],["Treadmill Run","15 min"]],
+ "Gym|Dumbbells":[["Dumbbell Bench Press","4 sets • 10 reps"],["Dumbbell Deadlift","3 sets • 10 reps"],["Goblet Squat","3 sets • 12 reps"],["Dumbbell Shoulder Press","3 sets • 10 reps"],["Farmer's Carry","3 sets • 30 sec"]],
+ "Gym|None":[["Treadmill Jog","15 min"],["Bodyweight Squats","3 sets • 15 reps"],["Push Ups","3 sets • 12 reps"],["Plank","3 sets • 45 sec"],["Stretching","10 min"]],
+ "Outdoor|None":[["Warm-up Jog","10 min"],["Sprint Intervals","6 sets • 30 sec"],["Bodyweight Squats","3 sets • 15 reps"],["Push Ups","3 sets • 12 reps"],["Cool-down Walk","10 min"]],
+ "Outdoor|Resistance Bands":[["Band Warm-up","5 min"],["Band Squats","3 sets • 15 reps"],["Band Rows on Rail","3 sets • 12 reps"],["Sprint Intervals","5 sets • 30 sec"],["Stretch & Cooldown","5 min"]],
+ "Outdoor|Dumbbells":[["Jog with Dumbbells Warm-up","8 min"],["Dumbbell Squats","3 sets • 12 reps"],["Dumbbell Lunges","3 sets • 12 reps"],["Sprint Intervals","5 sets • 30 sec"],["Cool-down Walk","8 min"]]
+};
+
+const exercisesByPurpose={
+ "Weight Loss":[{name:"Jumping Jacks",emoji:"🤸",duration:5,sets:"3 sets • 45 sec"},{name:"Burpees",emoji:"💥",duration:8,sets:"3 sets • 12 reps"},{name:"Mountain Climbers",emoji:"⛰",duration:5,sets:"3 sets • 30 sec"},{name:"Skipping Rope",emoji:"🪢",duration:10,sets:"3 sets • 2 min"},{name:"Brisk Walk / Jog",emoji:"🏃",duration:15,sets:"1 set • 15 min"}],
+ "Weight Gain":[{name:"Squats",emoji:"🏋",duration:8,sets:"4 sets • 12 reps"},{name:"Push Ups",emoji:"💪",duration:6,sets:"4 sets • 15 reps"},{name:"Deadlift (Light)",emoji:"🏋️",duration:8,sets:"4 sets • 10 reps"},{name:"Bench Press",emoji:"🛠",duration:8,sets:"4 sets • 10 reps"},{name:"Cooldown Stretch",emoji:"🧘",duration:5,sets:"5 min"}],
+ "Muscle Building":[{name:"Bench Press",emoji:"🏋️",duration:10,sets:"4 sets • 8 reps"},{name:"Pull Ups",emoji:"🧗",duration:8,sets:"4 sets • 8 reps"},{name:"Barbell Rows",emoji:"🎽",duration:8,sets:"4 sets • 10 reps"},{name:"Shoulder Press",emoji:"🏋️",duration:8,sets:"3 sets • 10 reps"},{name:"Bicep Curls",emoji:"💪",duration:6,sets:"3 sets • 15 reps"}],
+ "Height & Posture":[{name:"Cobra Stretch",emoji:"🐍",duration:3,sets:"3 sets • 30 sec"},{name:"Hanging Stretch",emoji:"🤾",duration:5,sets:"3 sets • 30 sec"},{name:"Skipping Rope",emoji:"🪢",duration:8,sets:"3 sets • 2 min"},{name:"Cat-Cow Stretch",emoji:"🐱",duration:4,sets:"3 sets • 10 reps"},{name:"Swim-Motion Stretch",emoji:"🏊",duration:5,sets:"3 sets • 1 min"}],
+ "Flexibility":[{name:"Forward Fold",emoji:"🧘",duration:3,sets:"3 sets • 30 sec"},{name:"Butterfly Stretch",emoji:"🦋",duration:3,sets:"3 sets • 30 sec"},{name:"Shoulder Stretch",emoji:"🙆",duration:3,sets:"3 sets • 30 sec"},{name:"Hip Flexor Stretch",emoji:"🤸",duration:4,sets:"3 sets • 30 sec"},{name:"Full Body Yoga Flow",emoji:"🧘",duration:10,sets:"1 set • 10 min"}],
+ "General Fitness":[{name:"Jumping Jacks",emoji:"🤸",duration:5,sets:"3 sets • 45 sec"},{name:"Push Ups",emoji:"💪",duration:5,sets:"3 sets • 12 reps"},{name:"Bodyweight Squats",emoji:"🏋",duration:5,sets:"3 sets • 15 reps"},{name:"Plank",emoji:"🧍",duration:3,sets:"3 sets • 45 sec"},{name:"Mountain Climbers",emoji:"⛰",duration:5,sets:"3 sets • 30 sec"}]
+};
+
+const nutrientSources={
+ Protein:"Eggs, chicken, fish, paneer, lentils, Greek yogurt",
+ Carbs:"Rice, oats, whole wheat, bananas, sweet potato",
+ Calcium:"Milk, curd, cheese, sesame seeds, leafy greens",
+ Iron:"Spinach, red meat, lentils, pumpkin seeds, jaggery",
+ Magnesium:"Nuts, whole grains, avocado, dark chocolate, bananas",
+ Potassium:"Bananas, potatoes, beans, coconut water, yogurt",
+ Zinc:"Meat, shellfish, legumes, pumpkin seeds, cashews",
+ Phosphorus:"Meat, dairy, fish, nuts, whole grains",
+ Sodium:"Table salt, pickles, papad, processed foods (limit intake)",
+ Iodine:"Iodized salt, seafood, dairy, eggs",
+ Selenium:"Brazil nuts, fish, eggs, sunflower seeds",
+ Copper:"Nuts, seeds, shellfish, whole grains, dark chocolate"
+};
+const dietTips={lose:"Maintain a moderate calorie deficit, prioritize protein & fiber, avoid sugary drinks, and stay hydrated.",maintain:"Balance your macros, eat whole foods, and keep portions consistent with your activity level.",gain:"Eat in a calorie surplus with extra protein and complex carbs; add an extra meal or healthy snack daily."};
+
+const activityFactors={"Sedentary":1.2,"Light":1.375,"Moderate":1.55,"Active":1.725,"Very Active":1.9};
+const proteinPerKg={"Sedentary":0.8,"Light":1.0,"Moderate":1.2,"Active":1.6,"Very Active":2.0};
+
+const aiTaskSuggestions={
+ lose:["Take a 20-minute brisk walk today","Swap one sugary drink for water","Do 3 sets of 15 bodyweight squats","Add an extra 2,000 steps today","Prep a high-protein, low-cal lunch"],
+ gain:["Eat an extra protein-rich snack today","Do a heavy leg day at the gym","Add a protein shake post-workout","Track meals to hit a calorie surplus","Do progressive overload on bench press"],
+ maintain:["Stretch for 10 minutes tonight","Log today's meals for balance","Take a 15-minute walk after dinner","Do a full-body mobility routine","Drink 8 glasses of water today"]
+};
+
+const achievementDefs=[
+ {label:"First Workout",desc:"Complete your first workout",check:u=>u.workouts>=1},
+ {label:"7 Day Streak",desc:"Maintain a 7 day streak",check:u=>u.streak>=7},
+ {label:"500 Points Club",desc:"Earn 500 points",check:u=>u.points>=500},
+ {label:"1000 Points Club",desc:"Earn 1000 points",check:u=>u.points>=1000},
+ {label:"10K Steps",desc:"Log 10,000+ steps",check:u=>u.steps>=10000},
+ {label:"Challenge Champ",desc:"Complete a challenge",check:u=>challenges.some(c=>c.status==="completed")},
+ {label:"Task Master",desc:"Complete 5 self-tasks",check:u=>(u.tasks||[]).filter(t=>t.done).length>=5}
+];
+
+const translations={
+ English:{home:"Home",challenges:"Challenges",tasks:"Tasks",trainer:"Trainer",profile:"Profile",hello:"Hello",settings:"App Settings",logout:"Logout",workoutTitle:"AI Workout Plan",myTasks:"My Tasks",addTask:"Add Task",aiSuggest:"AI Suggest",achievements:"My Achievements",workoutHistory:"Workout History",activityHistory:"Activity History",help:"Help & Support",privacy:"Privacy Policy",theme:"Theme",language:"Language",textSize:"Text Size",notifications:"Notifications",share:"Share Profile",qr:"My QR Code",startWorkout:"Start Workout",logActivity:"Log Activity",joinChallenge:"Join Challenge",nearby:"Nearby",healthSnapshot:"Your Health Snapshot",dietNutrition:"Diet & Nutrition",editHealth:"Edit Health Info",quickActions:"Quick Actions"},
+ Hindi:{home:"होम",challenges:"चुनौतियाँ",tasks:"कार्य",trainer:"ट्रेनर",profile:"प्रोफ़ाइल",hello:"नमस्ते",settings:"ऐप सेटिंग्स",logout:"लॉग आउट",workoutTitle:"एआई वर्कआउट योजना",myTasks:"मेरे कार्य",addTask:"कार्य जोड़ें",aiSuggest:"एआई सुझाव",achievements:"मेरी उपलब्धियाँ",workoutHistory:"वर्कआउट इतिहास",activityHistory:"गतिविधि इतिहास",help:"सहायता",privacy:"गोपनीयता नीति",theme:"थीम",language:"भाषा",textSize:"टेक्स्ट आकार",notifications:"सूचनाएं",share:"प्रोफ़ाइल साझा करें",qr:"मेरा क्यूआर कोड",startWorkout:"वर्कआउट शुरू करें",logActivity:"गतिविधि लॉग करें",joinChallenge:"चुनौती में शामिल हों",nearby:"आस-पास",healthSnapshot:"आपका स्वास्थ्य स्नैपशॉट",dietNutrition:"आहार और पोषण",editHealth:"स्वास्थ्य जानकारी संपादित करें",quickActions:"त्वरित कार्य"},
+ Marathi:{home:"होम",challenges:"आव्हाने",tasks:"कामे",trainer:"ट्रेनर",profile:"प्रोफाइल",hello:"नमस्कार",settings:"अ‍ॅप सेटिंग्ज",logout:"लॉगआउट",workoutTitle:"एआय वर्कआउट योजना",myTasks:"माझी कामे",addTask:"काम जोडा",aiSuggest:"एआय सूचना",achievements:"माझी यशस्विता",workoutHistory:"वर्कआउट इतिहास",activityHistory:"क्रियाकलाप इतिहास",help:"मदत आणि समर्थन",privacy:"गोपनीयता धोरण",theme:"थीम",language:"भाषा",textSize:"मजकूर आकार",notifications:"सूचना",share:"प्रोफाइल शेअर करा",qr:"माझा क्यूआर कोड",startWorkout:"वर्कआउट सुरू करा",logActivity:"क्रियाकलाप नोंदवा",joinChallenge:"आव्हानात सामील व्हा",nearby:"जवळपास",healthSnapshot:"तुमचा आरोग्य स्नॅपशॉट",dietNutrition:"आहार आणि पोषण",editHealth:"आरोग्य माहिती संपादित करा",quickActions:"जलद कृती"},
+ Tamil:{home:"முகப்பு",challenges:"சவால்கள்",tasks:"பணிகள்",trainer:"பயிற்சியாளர்",profile:"சுயவிவரம்",hello:"வணக்கம்",settings:"ஆப் அமைப்புகள்",logout:"வெளியேறு",workoutTitle:"AI பயிற்சி திட்டம்",myTasks:"என் பணிகள்",addTask:"பணி சேர்",aiSuggest:"AI பரிந்துரை",achievements:"எனது சாதனைகள்",workoutHistory:"பயிற்சி வரலாறு",activityHistory:"செயல்பாட்டு வரலாறு",help:"உதவி மற்றும் ஆதரவு",privacy:"தனியுரிமைக் கொள்கை",theme:"தீம்",language:"மொழி",textSize:"எழுத்து அளவு",notifications:"அறிவிப்புகள்",share:"சுயவிவரத்தைப் பகிரவும்",qr:"எனது QR குறியீடு",startWorkout:"பயிற்சியைத் தொடங்கு",logActivity:"செயல்பாட்டைப் பதிவு செய்",joinChallenge:"சவாலில் சேரவும்",nearby:"அருகில்",healthSnapshot:"உங்கள் ஆரோக்கிய சுருக்கம்",dietNutrition:"உணவு மற்றும் ஊட்டச்சத்து",editHealth:"ஆரோக்கிய தகவலைத் திருத்து",quickActions:"விரைவு செயல்கள்"},
+ Telugu:{home:"హోమ్",challenges:"సవాళ్లు",tasks:"పనులు",trainer:"ట్రైనర్",profile:"ప్రొఫైల్",hello:"నమస్తే",settings:"యాప్ సెట్టింగులు",logout:"లాగ్అవుట్",workoutTitle:"AI వర్కౌట్ ప్లాన్",myTasks:"నా పనులు",addTask:"పని జోడించు",aiSuggest:"AI సూచన",achievements:"నా సాధనలు",workoutHistory:"వర్కౌట్ చరిత్ర",activityHistory:"కార్యాచరణ చరిత్ర",help:"సహాయం మరియు మద్దతు",privacy:"గోప్యతా విధానం",theme:"థీమ్",language:"భాష",textSize:"వచన పరిమాణం",notifications:"నోటిఫికేషన్లు",share:"ప్రొఫైల్ షేర్ చేయండి",qr:"నా QR కోడ్",startWorkout:"వర్కౌట్ ప్రారంభించండి",logActivity:"కార్యాచరణ నమోదు చేయండి",joinChallenge:"సవాలులో చేరండి",nearby:"సమీపంలో",healthSnapshot:"మీ ఆరోగ్య స్నాప్‌షాట్",dietNutrition:"ఆహారం మరియు పోషణ",editHealth:"ఆరోగ్య సమాచారాన్ని సవరించండి",quickActions:"త్వరిత చర్యలు"},
+ Bengali:{home:"হোম",challenges:"চ্যালেঞ্জ",tasks:"কাজ",trainer:"ট্রেনার",profile:"প্রোফাইল",hello:"নমস্কার",settings:"অ্যাপ সেটিংস",logout:"লগ আউট",workoutTitle:"AI ওয়ার্কআউট প্ল্যান",myTasks:"আমার কাজ",addTask:"কাজ যোগ করুন",aiSuggest:"AI পরামর্শ",achievements:"আমার অর্জন",workoutHistory:"ওয়ার্কআউট ইতিহাস",activityHistory:"কার্যকলাপের ইতিহাস",help:"সাহায্য ও সহায়তা",privacy:"গোপনীয়তা নীতি",theme:"থিম",language:"ভাষা",textSize:"টেক্সট সাইজ",notifications:"বিজ্ঞপ্তি",share:"প্রোফাইল শেয়ার করুন",qr:"আমার QR কোড",startWorkout:"ওয়ার্কআউট শুরু করুন",logActivity:"কার্যকলাপ লগ করুন",joinChallenge:"চ্যালেঞ্জে যোগ দিন",nearby:"কাছাকাছি",healthSnapshot:"আপনার স্বাস্থ্য স্ন্যাপশট",dietNutrition:"খাদ্য ও পুষ্টি",editHealth:"স্বাস্থ্য তথ্য সম্পাদনা করুন",quickActions:"দ্রুত পদক্ষেপ"}
+};
+function t(key){let lang=localStorage.getItem(LKEY)||"English";return(translations[lang]&&translations[lang][key])||translations.English[key]||key;}
+
+function show(id){document.querySelectorAll(".auth,.app").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden")}
+function toast(t){let x=document.getElementById("toast");x.textContent=t;x.style.display="block";clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>x.style.display="none",2600)}
+function save(){localStorage.setItem(KEY,JSON.stringify(user))}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+function normalizeUser(){
+ if(!user)return;
+ user.goal=user.goal||"maintain";
+ user.activity=user.activity||"Light";
+ user.history=user.history||{workouts:[],activity:[]};
+ user.checkins=user.checkins||[];
+ user.tasks=user.tasks||[];
+ user.avatar=user.avatar||null;
+ user.steps=user.steps||0;user.points=user.points||0;user.streak=user.streak||0;user.workouts=user.workouts||0;
+}
+
+function isValidPassword(p){return /^[A-Za-z0-9!@#$%^&*()_\-+=]{8,}$/.test(p)}
+
+function getAge(dobStr){
+ if(!dobStr)return 0;
+ let d=new Date(dobStr);
+ if(isNaN(d))return 0;
+ let diff=Date.now()-d.getTime();
+ return Math.max(0,Math.floor(diff/(365.25*24*3600*1000)));
+}
+function bmiCategory(bmi){
+ if(bmi<18.5)return"Underweight";
+ if(bmi<25)return"Normal";
+ if(bmi<30)return"Overweight";
+ return"Obese";
+}
+function computeMicros(age,gender){
+ let teen=age<19&&age>0;
+ return{
+  calcium:teen?1300:(gender==="Female"&&age>50?1200:1000),
+  iron:gender==="Female"?(age>50?8:18):8,
+  magnesium:teen?(gender==="Female"?360:410):(gender==="Female"?310:400),
+  potassium:teen?(gender==="Female"?2300:3000):(gender==="Female"?2600:3400),
+  zinc:gender==="Female"?8:11,
+  phosphorus:teen?1250:700,
+  sodium:2300,
+  iodine:150,
+  selenium:55,
+  copper:900
+ };
+}
+function computeHealth(u){
+ if(!u.height||!u.weight)return null;
+ let heightM=u.height/100;
+ let bmi=+(u.weight/(heightM*heightM)).toFixed(1);
+ let age=getAge(u.dob)||20;
+ let bmr;
+ if(u.gender==="Female")bmr=10*u.weight+6.25*u.height-5*age-161;
+ else if(u.gender==="Male")bmr=10*u.weight+6.25*u.height-5*age+5;
+ else bmr=10*u.weight+6.25*u.height-5*age-78;
+ let factor=activityFactors[u.activity]||1.375;
+ let maintenance=Math.max(1200,Math.round(bmr*factor));
+ let pRate=proteinPerKg[u.activity]||1.0;
+ let protein=Math.round(u.weight*pRate);
+ let carbs=Math.round((maintenance*0.5)/4);
+ let micros=computeMicros(age,u.gender);
+ return Object.assign({bmi,category:bmiCategory(bmi),maintenance,protein,carbs,age},micros);
+}
+
+function register(){
+ let name=document.getElementById("name").value.trim(),email=document.getElementById("email").value.trim(),pass=document.getElementById("pass").value;
+ let dobv=document.getElementById("dob").value,genderv=document.getElementById("gender").value,activityv=document.getElementById("activity").value||"Light";
+ let heightv=+document.getElementById("height").value||0,weightv=+document.getElementById("weight").value||0;
+ if(!name||!email||!pass)return toast("Please fill name, email and password.");
+ if(!isValidPassword(pass))return toast("Password needs 8+ characters — letters, numbers & symbols only.");
+ let reportFile=document.getElementById("healthReport").files[0];
+ user={name,email,pass,dob:dobv,gender:genderv,activity:activityv,height:heightv,weight:weightv,
+  healthReportName:reportFile?reportFile.name:null,
+  steps:0,points:0,streak:0,workouts:0,goal:"maintain",avatar:null,
+  history:{workouts:[],activity:[]},checkins:[],tasks:[]};
+ save();enter();toast("Account created!");
+}
+function login(){
+ if(!user)return toast("Create an account first.");
+ if(lemail.value!==user.email||lpass.value!==user.pass)return toast("Invalid email or password.");
+ normalizeUser();save();enter();
+}
+function enter(){show("app");applyTheme();applyTextSize();nav("home");applyLanguage();}
+function logout(){show("welcome")}
+
+function nav(p){
+ document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));
+ document.getElementById(p).classList.remove("hidden");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+ let btn=document.getElementById("n-"+p);if(btn)btn.classList.add("active");
+ if(p==="home")renderHome();if(p==="challenges")renderChallenges();if(p==="tasks")renderTasks();if(p==="profile")renderProfile();if(p==="workout")renderWorkout();
+}
+
+function applyLanguage(){
+ let q=document.querySelector("#n-home span");if(q)q.textContent=t("home");
+ q=document.querySelector("#n-challenges span");if(q)q.textContent=t("challenges");
+ q=document.querySelector("#n-tasks span");if(q)q.textContent=t("tasks");
+ q=document.querySelector("#n-trainer span");if(q)q.textContent=t("trainer");
+ q=document.querySelector("#n-profile span");if(q)q.textContent=t("profile");
+ let activePage=[...document.querySelectorAll(".page")].find(p=>!p.classList.contains("hidden"));
+ if(activePage){
+  let id=activePage.id;
+  if(id==="home")renderHome();if(id==="challenges")renderChallenges();if(id==="tasks")renderTasks();if(id==="profile")renderProfile();if(id==="workout")renderWorkout();
+ }
+}
+
+let progressTab="weekly";
+function setProgressTab(tb){progressTab=tb;renderHome();}
+
+function renderHome(){
+ let first=(user.name||"Student").split(" ")[0];
+ let h=computeHealth(user);
+ let goalCals=h?h.maintenance+(user.goal==="gain"?500:user.goal==="lose"?-500:0):0;
+ let lastCheckin=user.checkins&&user.checkins[0];
+ home.innerHTML=`
+ <div class="hello">${t("hello")}, ${esc(first)} 👋</div><div class="sub">Keep going, you're doing great!</div>
+ <div class="progress">
+  <div class="ring"><b>${user.steps.toLocaleString()}<small>/10,000 Steps</small></b></div>
+  <div class="metrics"><div class="metric"><b>${Math.round(user.steps*.058)} Calories</b><small>Estimated</small></div><div class="metric"><b>${(user.steps*.00072).toFixed(1)} km</b><small>Distance</small></div><div class="metric"><b>${Math.round(user.steps*.009)} min</b><small>Active Time</small></div></div>
+ </div>
+ <div class="card"><div class="title">🔥 ${user.streak} Day Streak <small>${user.streak?"Great job! Keep it up.":"Start your streak today!"}</small></div><div class="streak">${["M","T","W","T","F","S","S"].map((d,i)=>`<div class="day ${i<user.streak?"done":""}">${d}</div>`).join("")}</div></div>
+ <div class="card"><div class="title">Progress <div class="mini-tabs"><button class="${progressTab==="daily"?"active":""}" onclick="setProgressTab('daily')">Daily</button><button class="${progressTab==="weekly"?"active":""}" onclick="setProgressTab('weekly')">Weekly</button></div></div>
+ ${progressTab==="weekly"?`<h2>${user.points.toLocaleString()} pts</h2><div class="bars">${[35,55,45,68,80,92,60].map(hh=>`<div class="bar" style="height:${hh}%"></div>`).join("")}</div>`
+ :`<p class="muted" style="margin:12px 0 0">Today's steps: ${user.steps.toLocaleString()} / 10,000 (${Math.min(100,Math.round(user.steps/100))}%)</p><div class="progress-bar-track"><div class="progress-bar-fill" style="width:${Math.min(100,Math.round(user.steps/100))}%"></div></div>`}</div>
+ ${h?`<div class="card"><div class="title">📊 ${t("healthSnapshot")} <small>BMI: ${h.bmi} (${h.category})</small></div>
+  <div class="flabel" style="margin:12px 0 0">Macros</div>
+  <div class="hcard">
+   <div class="hbox"><small>Maintenance</small><b>${h.maintenance} kcal</b></div>
+   <div class="hbox"><small>Protein / day</small><b>${h.protein} g</b></div>
+   <div class="hbox"><small>Carbs / day</small><b>${h.carbs} g</b></div>
+   <div class="hbox"><small>Calcium</small><b>${h.calcium} mg</b></div>
+  </div>
+  <div class="flabel" style="margin:14px 0 0">Minerals (Daily RDA)</div>
+  <div class="hcard">
+   <div class="hbox"><small>Iron</small><b>${h.iron} mg</b></div>
+   <div class="hbox"><small>Magnesium</small><b>${h.magnesium} mg</b></div>
+   <div class="hbox"><small>Potassium</small><b>${h.potassium} mg</b></div>
+   <div class="hbox"><small>Zinc</small><b>${h.zinc} mg</b></div>
+   <div class="hbox"><small>Phosphorus</small><b>${h.phosphorus} mg</b></div>
+   <div class="hbox"><small>Sodium (limit)</small><b>${h.sodium} mg</b></div>
+   <div class="hbox"><small>Iodine</small><b>${h.iodine} mcg</b></div>
+   <div class="hbox"><small>Selenium</small><b>${h.selenium} mcg</b></div>
+   <div class="hbox"><small>Copper</small><b>${h.copper} mcg</b></div>
+  </div>
+  <div class="flabel" style="margin:16px 0 4px">🎯 Calorie Goal</div>
+  <div class="goal-row">
+   <button class="${user.goal==="lose"?"active":""}" onclick="setGoal('lose')">Lose Weight</button>
+   <button class="${user.goal==="maintain"?"active":""}" onclick="setGoal('maintain')">Maintain</button>
+   <button class="${user.goal==="gain"?"active":""}" onclick="setGoal('gain')">Gain Weight</button>
+  </div>
+  <div class="hbox" style="margin-top:12px"><small>Your Target</small><b>${goalCals} kcal / day</b></div>
+  <button class="ghost big" onclick="openInfo(t('dietNutrition'),dietHtml())" style="margin-top:14px">🥗 Diet Recommendations & Mineral Sources</button>
+  <button class="ghost big" onclick="openEditHealth()" style="margin-top:8px">✎ ${t("editHealth")}</button>
+ </div>`:`<div class="card"><div class="title">📊 ${t("healthSnapshot")}</div><p class="muted">Add your height & weight to see your BMI, calories and daily nutrition targets.</p><button class="ghost big" onclick="openEditHealth()">✎ ${t("editHealth")}</button></div>`}
+ <div class="card"><div class="title">🛡 Daily Safety Check <small>${lastCheckin?"Last: "+esc(lastCheckin.feeling)+" · "+esc(lastCheckin.date):"How do you feel today?"}</small></div>
+ <div class="feel-row">
+  <button onclick="logCheckin('Great')">😄 Great</button>
+  <button onclick="logCheckin('OK')">🙂 OK</button>
+  <button onclick="logCheckin('Tired')">😴 Tired</button>
+  <button onclick="logCheckin('Sore')">🤕 Sore</button>
+ </div></div>
+ <div class="card"><div class="title">${t("quickActions")}</div><div class="quick">
+  <button onclick="nav('workout')">🏃<span>${t("startWorkout")}</span></button>
+  <button onclick="addSteps()">✓<span>${t("logActivity")}</span></button>
+  <button onclick="nav('challenges')">♛<span>${t("joinChallenge")}</span></button>
+  <button onclick="openNearby()">⌖<span>${t("nearby")}</span></button>
+ </div></div>`;
+}
+function setGoal(g){user.goal=g;save();renderHome();}
+function addSteps(){
+ let n=prompt("Enter steps to add:","1000");n=Number(n);
+ if(!n||n<0)return;
+ user.steps+=n;user.points+=Math.round(n/10);
+ if(!user.streak)user.streak=1;
+ user.history.activity.unshift({date:new Date().toLocaleString(),steps:n});
+ save();renderHome();toast("Activity logged!");
+}
+function logCheckin(feeling){
+ user.checkins.unshift({date:new Date().toLocaleDateString(),feeling});
+ save();
+ let tips={Great:"Awesome! Keep up the great work 💪",OK:"Good — stay consistent and hydrated.",Tired:"Consider a lighter session today and get enough sleep.",Sore:"Give the sore muscle group a rest day, stretch gently, hydrate, and see a doctor if pain persists."};
+ renderHome();
+ toast(tips[feeling]||"Logged!");
+}
+
+function openEditHealth(){
+ document.getElementById("editDob").value=user.dob||"";
+ document.getElementById("editGender").value=user.gender||"";
+ document.getElementById("editActivity").value=user.activity||"Light";
+ document.getElementById("editHeight").value=user.height||"";
+ document.getElementById("editWeight").value=user.weight||"";
+ document.getElementById("editHealthSheet").classList.remove("hidden");
+}
+function closeEditHealth(){document.getElementById("editHealthSheet").classList.add("hidden");}
+function saveHealthEdit(){
+ user.dob=document.getElementById("editDob").value;
+ user.gender=document.getElementById("editGender").value;
+ user.activity=document.getElementById("editActivity").value||"Light";
+ user.height=+document.getElementById("editHeight").value||0;
+ user.weight=+document.getElementById("editWeight").value||0;
+ save();closeEditHealth();
+ let activePage=[...document.querySelectorAll(".page")].find(p=>!p.classList.contains("hidden"));
+ if(activePage){if(activePage.id==="home")renderHome();if(activePage.id==="profile")renderProfile();}
+ toast("Health info updated!");
+}
+
+function renderChallenges(tab){
+ tab=tab||"active";
+ document.getElementById("challenges").innerHTML=`<h1>${t("challenges")}</h1><div class="tabs">
+  <${tab==="active"?"b":"span"} onclick="renderChallenges('active')">Active</${tab==="active"?"b":"span"}>
+  <${tab==="completed"?"b":"span"} onclick="renderChallenges('completed')">Completed</${tab==="completed"?"b":"span"}>
+ </div>`+renderChallengeList(tab);
+}
+function renderChallengeList(tab){
+ let list=challenges.map((c,i)=>({c,i})).filter(x=>tab==="completed"?x.c.status==="completed":x.c.status!=="completed");
+ if(list.length===0)return`<div class="card" style="text-align:center;color:#999">No ${tab} challenges yet.</div>`;
+ return list.map(({c,i})=>{
+  let btnLabel=c.status==="available"?"Join":c.status==="joined"?"Mark Complete":"Completed ✓";
+  let btnClass=c.status==="completed"?"join done":"join";
+  let disabled=c.status==="completed"?"disabled":"";
+  return `<div class="card challenge"><div class="hero"><span class="pill">${c.cat}</span><h2>${esc(c.title)}</h2><p>${esc(c.desc)}</p></div><div class="body"><div class="row"><span><b>${c.participants.toLocaleString()}</b> Participants</span><span><b>${c.days}</b> Days Left</span><button class="${btnClass}" ${disabled} onclick="challengeAction(${i})">${btnLabel}</button></div></div></div>`;
+ }).join("");
+}
+function challengeAction(i){
+ let c=challenges[i];
+ if(c.status==="available"){c.status="joined";c.participants++;user.points+=50;toast("Challenge joined! +50 points");}
+ else if(c.status==="joined"){c.status="completed";user.points+=100;if(!user.streak)user.streak=1;toast("Challenge completed! +100 points");}
+ save();renderChallenges("active");
+}
+
+function renderTasks(){
+ let tasks=user.tasks||[];
+ document.getElementById("tasks").innerHTML=`<h1>${t("myTasks")}</h1><p class="sub">Create your own fitness goals — tap AI Suggest for an idea.</p>
+ <div class="card">
+  <input id="taskTitleInput" placeholder="e.g. Walk 5000 steps today">
+  <input id="taskNoteInput" placeholder="Notes (optional)">
+  <div class="select-row">
+   <button class="primary" onclick="addTask()">+ ${t("addTask")}</button>
+   <button class="ghost" onclick="suggestTaskAI()">✦ ${t("aiSuggest")}</button>
+  </div>
+ </div>
+ <div class="card">${tasks.length?tasks.map(tk=>`<div class="menu"><span style="text-decoration:${tk.done?"line-through":"none"};opacity:${tk.done?0.55:1}"><b onclick="toggleTask(${tk.id})" style="cursor:pointer">${tk.done?"✅":"⬜"} ${esc(tk.title)}</b>${tk.note?`<br><small class="muted">${esc(tk.note)}</small>`:""}</span><span onclick="deleteTask(${tk.id})" style="cursor:pointer;color:#e0473d">✕</span></div>`).join(""):"<p class='muted' style='text-align:center'>No tasks yet — add one above!</p>"}</div>`;
+}
+function addTask(){
+ let title=document.getElementById("taskTitleInput").value.trim();
+ let note=document.getElementById("taskNoteInput").value.trim();
+ if(!title)return toast("Enter a task title.");
+ user.tasks=user.tasks||[];
+ user.tasks.unshift({id:Date.now(),title,note,done:false});
+ save();renderTasks();toast("Task added!");
+}
+function toggleTask(id){
+ let tk=(user.tasks||[]).find(x=>x.id===id);
+ if(!tk)return;
+ tk.done=!tk.done;
+ if(tk.done){user.points+=20;toast("Task completed! +20 points");}
+ save();renderTasks();
+}
+function deleteTask(id){
+ user.tasks=(user.tasks||[]).filter(x=>x.id!==id);
+ save();renderTasks();
+}
+async function suggestTaskAI(){
+ toast("Getting a suggestion...");
+ let text=await getAiTaskSuggestion();
+ document.getElementById("taskTitleInput").value=text;
+ toast("Suggestion ready — tap Add Task to save it!");
+}
+async function getAiTaskSuggestion(){
+ let h=computeHealth(user);
+ try{
+  let controller=new AbortController();let timer=setTimeout(()=>controller.abort(),10000);
+  const response=await fetch("/api/task-suggestion",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   signal:controller.signal,
+   body:JSON.stringify({goal:user.goal,bmi:h?h.bmi:null,activity:user.activity})
+  });
+  clearTimeout(timer);
+  if(!response.ok)throw new Error("bad status");
+  const data=await response.json();
+  let out=(data.text||"").trim();
+  if(!out)throw new Error("empty");
+  return out.replace(/^["']|["']$/g,"");
+ }catch(e){
+  let pool=aiTaskSuggestions[user.goal]||aiTaskSuggestions.maintain;
+  return pool[Math.floor(Math.random()*pool.length)];
+ }
+}
+
+function renderNearbyList(){
+ document.getElementById("nearbyList").innerHTML=nearbyPeople.map(p=>`<div class="near-card"><div class="near-av">${esc(p.name[0])}</div><div class="near-info"><b>${esc(p.name)}</b><span class="pill">${esc(p.bio)}</span></div><div class="near-dist">${esc(p.dist)}</div></div>`).join("");
+}
+function openNearby(){renderNearbyList();document.getElementById("nearbySheet").classList.remove("hidden");}
+function closeNearby(){document.getElementById("nearbySheet").classList.add("hidden");}
+
+function renderProfile(){
+ let h=computeHealth(user);
+ let avatarStyle=user.avatar?`style="background-image:url('${user.avatar}')"`:"";
+ document.getElementById("profile").innerHTML=`<h1>${t("profile")}</h1><div class="card"><div class="profile-row">
+ <div class="avatar-wrap"><div class="avatar" ${avatarStyle} onclick="document.getElementById('avatarFile').click()">${user.avatar?"":esc(user.name[0])}</div><div class="avatar-edit" onclick="document.getElementById('avatarFile').click()">✎</div></div>
+ <div><h2 style="margin-bottom:4px">${esc(user.name)} <span class="level">Level ${Math.floor(user.points/500)+1}</span></h2><p class="muted" style="margin:0">${user.points.toLocaleString()} pts</p></div></div>
+ <div class="avatarpick-row"><button onclick="document.getElementById('avatarFile').click()">📷 Upload Photo</button><button onclick="aiSuggestAvatar()">✦ AI Suggested</button></div>
+ <div class="stats"><div class="stat">Total Steps<b>${(user.steps/1000).toFixed(1)}K</b></div><div class="stat">Workouts<b>${user.workouts}</b></div><div class="stat">Total Points<b>${user.points.toLocaleString()}</b></div><div class="stat">Streak<b>${user.streak} Days 🔥</b></div></div></div>
+ ${h?`<div class="card"><div class="title">Health Overview <small>BMI ${h.bmi} · ${h.category}</small></div><div class="hcard"><div class="hbox"><small>Calories</small><b>${h.maintenance}</b></div><div class="hbox"><small>Protein</small><b>${h.protein}g</b></div><div class="hbox"><small>Carbs</small><b>${h.carbs}g</b></div><div class="hbox"><small>Calcium</small><b>${h.calcium}mg</b></div></div><button class="ghost big" onclick="openEditHealth()" style="margin-top:12px">✎ ${t("editHealth")}</button></div>`:`<div class="card"><button class="ghost big" onclick="openEditHealth()">✎ ${t("editHealth")}</button></div>`}
+ <div class="card">
+  <div class="menu" onclick="openSettings()">⚙ ${t("settings")} <span>›</span></div>
+  <div class="menu" onclick="openInfo(t('achievements'),achievementsHtml())">🏆 ${t("achievements")} <span>›</span></div>
+  <div class="menu" onclick="openInfo(t('workoutHistory'),historyHtml('workouts'))">♙ ${t("workoutHistory")} <span>›</span></div>
+  <div class="menu" onclick="openInfo(t('activityHistory'),historyHtml('activity'))">✓ ${t("activityHistory")} <span>›</span></div>
+  <div class="menu">📄 Health Report <span>${user.healthReportName?esc(user.healthReportName):"Not uploaded"}</span></div>
+  <div class="menu" onclick="openInfo(t('help'),helpHtml())">? ${t("help")} <span>›</span></div>
+ </div>`;
+}
+function onAvatarFile(e){
+ let f=e.target.files[0];if(!f)return;
+ let reader=new FileReader();
+ reader.onload=function(ev){user.avatar=ev.target.result;save();renderProfile();toast("Profile photo updated!");};
+ reader.readAsDataURL(f);
+}
+function aiSuggestAvatar(){
+ let seed=Math.random().toString(36).slice(2);
+ user.avatar=`https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
+ save();renderProfile();toast("AI suggested a new avatar!");
+}
+
+function achievementsHtml(){
+ return achievementDefs.map(a=>{let unlocked=a.check(user);return `<div class="menu"><span>${unlocked?"🏆":"🔒"} <b>${esc(a.label)}</b><br><small class="muted">${esc(a.desc)}</small></span>${unlocked?"<span style='color:#2ea56d;font-size:12px'>Unlocked</span>":"<span class='muted' style='font-size:12px'>Locked</span>"}</div>`}).join("");
+}
+function historyHtml(type){
+ let list=(user.history&&user.history[type])||[];
+ if(!list.length)return `<p class="muted">No ${type==="workouts"?"workout":"activity"} history yet. Get moving!</p>`;
+ return list.map(r=>type==="workouts"?`<div class="menu"><span><b>${esc(r.plan)}</b><br><small class="muted">${esc(r.date)}</small></span><span>${r.duration} min</span></div>`:`<div class="menu"><span><b>Activity Log</b><br><small class="muted">${esc(r.date)}</small></span><span>${r.steps} steps</span></div>`).join("");
+}
+function helpHtml(){
+ return `<p>Need help or want to share feedback? We'd love to hear from you.</p>
+ <p><b>Email:</b> ansh2806singh@gmail.com</p>
+ <a class="primary big" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box" href="mailto:ansh2806singh@gmail.com?subject=FitCampus%20Support" target="_blank" rel="noopener">✉ Email Support</a>
+ <button class="ghost big" onclick="copyEmail()">📋 Copy Email Address</button>
+ <div class="flabel" style="margin-top:18px">FAQs</div>
+ <div class="menu"><span>How do I earn points?<br><small class="muted">Log activity, complete workouts, tasks and challenges.</small></span></div>
+ <div class="menu"><span>Is my health data private?<br><small class="muted">Yes — see our Privacy Policy for details.</small></span></div>
+ <div class="menu"><span>How is my calorie target calculated?<br><small class="muted">From your height, weight, age, gender and activity level.</small></span></div>`;
+}
+function copyEmail(){
+ let email="ansh2806singh@gmail.com";
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(email).then(()=>toast("Email copied: "+email)).catch(()=>toast("Email: "+email));
+ }else{toast("Email: "+email);}
+}
+function dietHtml(){
+ let tip=user.goal==="lose"?dietTips.lose:user.goal==="gain"?dietTips.gain:dietTips.maintain;
+ let sourcesHtml=Object.keys(nutrientSources).map(k=>`<div class="menu"><span><b>${esc(k)}</b></span><span class="muted" style="text-align:right;max-width:58%;font-size:12px">${esc(nutrientSources[k])}</span></div>`).join("");
+ return `<p><b>Your Goal:</b> ${esc(user.goal)}<br>${esc(tip)}</p><div class="flabel" style="margin-bottom:6px">Mineral & Nutrient Sources</div>${sourcesHtml}<p class="hint" style="margin-top:12px">General guidance only — consult a nutritionist or doctor for a personalized diet plan.</p>`;
+}
+function privacyHtml(){
+ return `<p>FitCampus respects your privacy.</p><ul style="padding-left:18px;color:var(--muted);font-size:13px;line-height:1.7">
+ <li>Your profile & health data are stored locally on your device and used only to personalize your experience.</li>
+ <li>Messages you send to the AI Trainer may be processed by a third-party AI service to generate a response.</li>
+ <li>We do not sell your personal data to third parties.</li>
+ <li>You can clear your chat history anytime from the Trainer chat window.</li>
+ <li>For privacy questions or data removal requests, contact ansh2806singh@gmail.com.</li>
+ </ul>`;
+}
+function openInfo(title,html){document.getElementById("infoTitle").textContent=title;document.getElementById("infoBody").innerHTML=html;document.getElementById("infoSheet").classList.remove("hidden");}
+function closeInfo(){document.getElementById("infoSheet").classList.add("hidden");}
+
+let currentPurpose="General Fitness";
+let currentPlan=exercisesByPurpose[currentPurpose];
+function renderWorkout(){
+ document.getElementById("workout").innerHTML=`<h1>${t("workoutTitle")}</h1>
+ <div class="workout"><small>Today's Plan</small><h2>${esc(currentPurpose)}</h2><span>◷ ${currentPlan.reduce((s,e)=>s+e.duration,0)} min　♧ ${currentPlan.length} exercises</span></div>
+ <div class="card"><div class="select-row" style="grid-template-columns:1fr">
+  <select id="purposeSelect" onchange="changePurpose(this.value)">
+   ${Object.keys(exercisesByPurpose).map(p=>`<option ${p===currentPurpose?"selected":""}>${p}</option>`).join("")}
+  </select>
+ </div>
+ ${currentPurpose==="Height & Posture"?'<p class="hint" style="margin-top:8px">Supports posture, flexibility & spinal decompression — actual height is largely determined by genetics.</p>':""}
+ <h3 style="margin-bottom:4px">Exercises</h3>
+ ${currentPlan.map(x=>`<div class="exercise"><div style="display:flex;gap:12px;align-items:center"><div class="ex-img">${x.emoji}</div><span><b>${esc(x.name)}</b><small>${esc(x.sets)} · ${x.duration} min</small></span></div><span class="check">✓</span></div>`).join("")}
+ <button class="primary big" onclick="startWorkout()">▶ Start Workout</button></div>
+ <div class="card"><h3 style="margin-top:0">🏋 Suggest Exercises by Place & Equipment</h3><p class="muted" style="margin-top:0">Tell us where you are and what you have.</p>
+ <div class="select-row">
+  <select id="exPlace"><option>Home</option><option>Gym</option><option>Outdoor</option></select>
+  <select id="exEquip"><option>None</option><option>Dumbbells</option><option>Resistance Bands</option><option>Full Gym</option></select>
+ </div>
+ <button class="primary big" onclick="suggestExercises()">Suggest Exercises</button>
+ <div id="suggestedList" style="margin-top:6px"></div>
+ </div>`;
+}
+function changePurpose(p){currentPurpose=p;currentPlan=exercisesByPurpose[p];renderWorkout();}
+function suggestExercises(){
+ let place=document.getElementById("exPlace").value;
+ let eq=document.getElementById("exEquip").value;
+ let key=place+"|"+eq;
+ let list=exerciseBank[key]||exerciseBank["Home|None"];
+ document.getElementById("suggestedList").innerHTML=list.map(x=>`<div class="exercise"><span><b>${esc(x[0])}</b><small>${esc(x[1])}</small></span></div>`).join("");
+}
+function startWorkout(){
+ user.workouts++;user.points+=100;if(!user.streak)user.streak=1;
+ user.history.workouts.unshift({date:new Date().toLocaleString(),plan:currentPurpose,duration:currentPlan.reduce((s,e)=>s+e.duration,0)});
+ save();toast("Workout started! +100 points");
+}
+
+function renderSettingsSheet(){
+ document.getElementById("settingsSheetInner").innerHTML=`
+ <div class="sheet-head"><h2>${t("settings")}</h2><button onclick="closeSettings()">✕</button></div>
+ <div class="flabel" style="margin-bottom:6px">${t("theme")}</div>
+ <div class="theme-row">
+  <button id="th-light" onclick="setTheme('light')">☀ Light</button>
+  <button id="th-dark" onclick="setTheme('dark')">☾ Dark</button>
+  <button id="th-system" onclick="setTheme('system')">⚙ System</button>
+ </div>
+ <div class="flabel" style="margin-bottom:6px">${t("textSize")}</div>
+ <div class="theme-row">
+  <button id="ts-small" onclick="setTextSize('small')">A−</button>
+  <button id="ts-medium" onclick="setTextSize('medium')">A</button>
+  <button id="ts-large" onclick="setTextSize('large')">A+</button>
+ </div>
+ <div class="flabel" style="margin-bottom:6px">${t("language")}</div>
+ <select id="langSelect" onchange="setLanguage(this.value)">
+  <option>English</option><option>Hindi</option><option>Marathi</option><option>Tamil</option><option>Telugu</option><option>Bengali</option>
+ </select>
+ <div class="menu"><span>🔔 ${t("notifications")}</span><label class="switch"><input type="checkbox" id="notifToggle" onchange="toggleNotifications(event)"><span class="slider"></span></label></div>
+ <div class="menu" onclick="shareProfile()">↗ ${t("share")} <span>›</span></div>
+ <div class="menu" onclick="toggleQr()">▦ ${t("qr")} <span>›</span></div>
+ <div id="qrBox" class="qr-box hidden"></div>
+ <div class="menu danger" onclick="closeSettings();logout()">⏻ ${t("logout")} <span>›</span></div>`;
+}
+function openSettings(){
+ renderSettingsSheet();
+ document.getElementById("settingsSheet").classList.remove("hidden");
+ highlightTheme();highlightTextSize();
+ document.getElementById("langSelect").value=localStorage.getItem(LKEY)||"English";
+ document.getElementById("notifToggle").checked=localStorage.getItem(NKEY)==="1";
+}
+function closeSettings(){document.getElementById("settingsSheet").classList.add("hidden");document.getElementById("qrBox").classList.add("hidden");}
+function setTheme(tv){localStorage.setItem(TKEY,tv);applyTheme();highlightTheme();}
+function getTheme(){return localStorage.getItem(TKEY)||"system"}
+function applyTheme(){
+ let tv=getTheme();
+ let dark=tv==="dark"||(tv==="system"&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);
+ document.documentElement.classList.toggle("theme-dark",dark);
+}
+function highlightTheme(){
+ let tv=getTheme();
+ ["light","dark","system"].forEach(x=>{let el=document.getElementById("th-"+x);if(el)el.classList.toggle("active",x===tv);});
+}
+if(window.matchMedia){
+ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(getTheme()==="system")applyTheme();});
+}
+function setTextSize(sz){localStorage.setItem(TSKEY,sz);applyTextSize();highlightTextSize();}
+function applyTextSize(){
+ let sz=localStorage.getItem(TSKEY)||"medium";
+ document.body.style.zoom=sz==="small"?"0.9":sz==="large"?"1.15":"1";
+}
+function highlightTextSize(){
+ let sz=localStorage.getItem(TSKEY)||"medium";
+ ["small","medium","large"].forEach(x=>{let el=document.getElementById("ts-"+x);if(el)el.classList.toggle("active",x===sz);});
+}
+function setLanguage(l){
+ localStorage.setItem(LKEY,l);
+ applyLanguage();
+ renderSettingsSheet();highlightTheme();highlightTextSize();
+ document.getElementById("langSelect").value=l;
+ document.getElementById("notifToggle").checked=localStorage.getItem(NKEY)==="1";
+ toast(l==="English"?"Language set to English":"भाषा / மொழி / భాష updated — full content translation is expanding");
+}
+function toggleNotifications(e){
+ if(e.target.checked){
+  localStorage.setItem(NKEY,"1");
+  if("Notification" in window && Notification.requestPermission)Notification.requestPermission();
+  toast("Notifications enabled");
+ }else{localStorage.setItem(NKEY,"0");toast("Notifications disabled");}
+}
+function shareProfile(){
+ let text=`Check out ${user.name}'s fitness journey on FitCampus! ${user.points} points, ${user.streak} day streak.`;
+ if(navigator.share){navigator.share({title:"FitCampus Profile",text}).catch(()=>{});}
+ else{navigator.clipboard?navigator.clipboard.writeText(text).then(()=>toast("Profile link copied!")):toast(text);}
+}
+function toggleQr(){
+ let box=document.getElementById("qrBox");
+ box.classList.toggle("hidden");
+ if(!box.classList.contains("hidden")){
+  let data=encodeURIComponent(`FitCampus:${user.name}:${user.email}`);
+  box.innerHTML=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${data}" width="160" height="160" alt="Profile QR">`;
+ }
+}
+
+let chatHistory=[];
+let chatOpen=false;
+let voiceOut=false;
+let listening=false;
+let recognition=null;
+const chatQuickPrompts=["Plan my week","I'm sore today","Motivate me","Nutrition tip"];
+const chatTips=["💪 Suggest workouts for your goal","🥗 Diet & macro guidance","🔥 Motivation & streak tracking","📊 Explain your BMI & calorie targets"];
+
+function toggleChat(){
+ chatOpen=!chatOpen;
+ document.getElementById("chatPanel").classList.toggle("hidden",!chatOpen);
+ if(chatOpen&&chatHistory.length===0){
+  let inner=document.getElementById("chatBodyInner");
+  inner.innerHTML=`<div class="tips-card"><b>Here's what I can help with:</b>${chatTips.map(x=>`<div>${x}</div>`).join("")}</div>`;
+  addMsg("bot",`Hey ${esc((user&&user.name||"there").split(" ")[0])}! I'm Trainer, your FitCampus AI coach. What's up?`);
+  renderQuick();
+ }
+}
+function clearChat(){
+ chatHistory=[];
+ document.getElementById("chatBodyInner").innerHTML=`<div class="tips-card"><b>Here's what I can help with:</b>${chatTips.map(x=>`<div>${x}</div>`).join("")}</div>`;
+ addMsg("bot","Chat history cleared. How can I help you today?");
+ renderQuick();
+}
+function renderQuick(){
+ document.getElementById("chatQuick").innerHTML=chatQuickPrompts.map(q=>`<button onclick="quickSend('${q.replace(/'/g,"\\'")}')">${esc(q)}</button>`).join("");
+}
+function quickSend(q){document.getElementById("chatInput").value=q;sendChat()}
+function addMsg(role,text){
+ chatHistory.push({role,text});
+ let b=document.getElementById("chatBodyInner");
+ let d=document.createElement("div");
+ d.className="msg "+(role==="user"?"user":"bot");
+ d.textContent=text;
+ b.appendChild(d);
+ document.getElementById("chatBody").scrollTop=document.getElementById("chatBody").scrollHeight;
+ if(role==="bot"&&voiceOut)speak(text);
+}
+function setTyping(on){
+ let b=document.getElementById("chatBodyInner");
+ let ex=document.getElementById("typingMsg");
+ if(on){
+  if(ex)return;
+  let d=document.createElement("div");
+  d.id="typingMsg";d.className="msg bot typing";
+  d.innerHTML="<span></span><span></span><span></span>";
+  b.appendChild(d);document.getElementById("chatBody").scrollTop=document.getElementById("chatBody").scrollHeight;
+ }else if(ex)ex.remove();
+}
+async function sendChat(){
+ let input=document.getElementById("chatInput");
+ let text=input.value.trim();
+ if(!text)return;
+ input.value="";
+ document.getElementById("chatQuick").innerHTML="";
+ addMsg("user",text);
+ setTyping(true);
+ let reply=await askCoach(text);
+ setTyping(false);
+ addMsg("bot",reply);
+ renderQuick();
+}
+function generateLocalReply(msg,h){
+ let m=msg.toLowerCase();
+ let name=(user.name||"there").split(" ")[0];
+ if(/calor/.test(m))return h?`Your estimated maintenance is about ${h.maintenance} kcal/day. Based on your goal (${user.goal}), your target is around ${h.maintenance+(user.goal==="gain"?500:user.goal==="lose"?-500:0)} kcal/day.`:"Add your height and weight in your Profile so I can calculate your personalized calorie target!";
+ if(/protein/.test(m))return h?`Aim for about ${h.protein}g of protein a day. Good sources: eggs, chicken, paneer, lentils and Greek yogurt.`:"Fill in your height & weight in Profile so I can suggest a protein target.";
+ if(/bmi/.test(m))return h?`Your BMI is ${h.bmi} (${h.category}).`:"Add your height & weight in Profile to see your BMI.";
+ if(/sore|pain|hurt|injur/.test(m))return "Sorry to hear that! Rest the affected area, stay hydrated, and consider a lighter or rest day. If pain persists more than a couple of days, please see a doctor.";
+ if(/motivat|tired|lazy|give up/.test(m))return `You've got this, ${name}! ${user.streak>0?"You're on a "+user.streak+"-day streak — ":""}small consistent effort beats big bursts. Let's keep moving! 💪`;
+ if(/plan|workout|exercise/.test(m))return "Check out Today's Plan on the Workout tab — pick a goal like Weight Loss, Muscle Building or Flexibility and I'll generate exercises for you.";
+ if(/diet|food|eat|nutrition|mineral/.test(m))return "Open the Diet & Nutrition section on your Home page (under Health Snapshot) for goal-based diet tips and food sources for key nutrients.";
+ if(/streak/.test(m))return `You're on a ${user.streak}-day streak. Keep logging activity daily to build the habit!`;
+ if(/points|score/.test(m))return `You currently have ${user.points.toLocaleString()} points. Complete challenges, tasks and workouts to earn more!`;
+ if(/task/.test(m))return "Head to the + Tasks tab to create your own goals, or tap AI Suggest there for an idea tailored to your target.";
+ if(/hi|hello|hey/.test(m))return `Hey ${name}! How can I help with your fitness journey today?`;
+ return `Thanks for sharing! I can help with workouts, calories, protein & nutrition, motivation, or your progress — what would you like to know, ${name}?`;
+}
+async function askCoach(message){
+ let h=computeHealth(user);
+ try{
+  let controller=new AbortController();
+  let timer=setTimeout(()=>controller.abort(),12000);
+  let profile={name:user.name,steps:user.steps,points:user.points,streak:user.streak,workouts:user.workouts,height:user.height,weight:user.weight,goal:user.goal,health:h};
+  let convo=chatHistory.slice(-8).map(m=>({role:m.role==="user"?"user":"assistant",content:m.text}));
+  const response=await fetch("/api/coach",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   signal:controller.signal,
+   body:JSON.stringify({profile,messages:convo,message})
+  });
+  clearTimeout(timer);
+  if(!response.ok)throw new Error("bad status "+response.status);
+  const data=await response.json();
+  let out=(data.reply||"").trim();
+  if(!out)throw new Error("empty reply");
+  return out;
+ }catch(e){
+  return generateLocalReply(message,h);
+ }
+}
+
+function toggleVoiceOut(){
+ voiceOut=!voiceOut;
+ document.getElementById("voiceOutBtn").textContent=voiceOut?"🔊":"🔇";
+ if(voiceOut){
+  if(!("speechSynthesis" in window)){toast("Voice replies aren't supported in this browser.");voiceOut=false;document.getElementById("voiceOutBtn").textContent="🔇";return;}
+  speak("Voice replies turned on");
+  toast("Voice replies on");
+ }else{
+  toast("Voice replies off");
+  if("speechSynthesis" in window)speechSynthesis.cancel();
+ }
+}
+function speak(text){
+ if(!("speechSynthesis" in window))return;
+ try{
+  speechSynthesis.cancel();
+  let u=new SpeechSynthesisUtterance(text);
+  u.rate=1;u.pitch=1;u.volume=1;
+  u.onerror=function(){toast("Voice playback failed on this device.");};
+  speechSynthesis.speak(u);
+ }catch(e){toast("Voice playback isn't available on this device.");}
+}
+function toggleVoiceInput(){
+ let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR)return toast("Voice input isn't supported in this browser.");
+ if(listening){recognition&&recognition.stop();return;}
+ try{
+  recognition=new SR();
+  recognition.lang="en-IN";
+  recognition.interimResults=false;
+  recognition.maxAlternatives=1;
+  recognition.onstart=()=>{listening=true;document.getElementById("micBtn").classList.add("listening");};
+  recognition.onerror=(e)=>{
+   listening=false;document.getElementById("micBtn").classList.remove("listening");
+   let msg=e&&e.error==="not-allowed"?"Microphone permission denied. Enable mic access for this site.":
+    e&&e.error==="no-speech"?"Didn't catch that — try again.":
+    "Voice input needs HTTPS or a local server to access the microphone.";
+   toast(msg);
+  };
+  recognition.onend=()=>{listening=false;document.getElementById("micBtn").classList.remove("listening");};
+  recognition.onresult=(e)=>{
+   let text=e.results[0][0].transcript;
+   document.getElementById("chatInput").value=text;
+   sendChat();
+  };
+  recognition.start();
+ }catch(e){toast("Couldn't start voice input on this device.");}
+}
+
+applyTheme();
+applyTextSize();
+if(user)enter();
+</script>
+</body>
+</html>

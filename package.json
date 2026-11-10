@@ -1,0 +1,21 @@
+{
+  "name": "fitcampus-sih26196",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "FitCampus - SIH26196",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0"
+  }
+}
